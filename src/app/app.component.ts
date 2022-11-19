@@ -22,17 +22,20 @@ export class AppComponent implements OnInit {
 
   subtitleArray!: any;
   subtitleText: string = '';
+  showPlaylist: boolean = false;
 
   ngOnInit(): void {
     this.createSubtitleArray();
   }
 
   selectSong(song: Song) {
+    this.subtitleText = "";
     this.song = song;
     this.createSubtitleArray();
   }
 
   createSubtitleArray(): void {
+    
     fetchSubtitle(this.song.eng_subtitle)
       .then((subtitleText) => createSubtitle(subtitleText))
       .then((sub) => {
@@ -50,5 +53,13 @@ export class AppComponent implements OnInit {
         this.subtitleText = this.subtitleArray[idx].part;
       }
     });
+  }
+
+  closePlaylist(): void {
+    this.showPlaylist = false;
+  }
+
+  togglePlaylist(): void {
+    this.showPlaylist = !this.showPlaylist;
   }
 }

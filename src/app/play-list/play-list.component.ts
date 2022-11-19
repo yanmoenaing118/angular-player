@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Song } from 'src/utils/types';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
 
 const songs: Array<Song> = [
   {
@@ -86,7 +88,9 @@ const songs: Array<Song> = [
 export class PlayListComponent implements OnInit {
 
   @Output() emitSelectedSong = new EventEmitter<Song>();
+  @Output() closePlayList = new EventEmitter<void>();
   songs: Array<Song>;
+  faXmark = faXmark;
 
   constructor() {
     this.songs = songs;
@@ -96,5 +100,9 @@ export class PlayListComponent implements OnInit {
 
   selectSong(song: Song) {
     this.emitSelectedSong.emit(song);
+  }
+
+  closePlaylist(){
+    this.closePlayList.emit();
   }
 }

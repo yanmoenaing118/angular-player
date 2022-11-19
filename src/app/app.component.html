@@ -1,12 +1,24 @@
-<app-play-list (emitSelectedSong)="selectSong($event)"></app-play-list>
+<app-play-list *ngIf="showPlaylist" (closePlayList)="closePlaylist()" (emitSelectedSong)="selectSong($event)"></app-play-list>
 
-<div class="fixed w-full h-full bg-cover bg-no-repeat" [style.backgroundImage]="'url('+song.poster+')'">
+<div class="fixed w-full h-full bg-cover bg-no-repeat player-bg" [style.backgroundImage]="'url('+song.poster+')'
+">
+  <button (click)="togglePlaylist()" class="z-10 absolute right-4 top-4 bg-black text-white p-3 shadow-md">PLAYLIST</button>
+  <h1 class="font-mono text-white text-center
+  absolute
+  top-1/2
+  left-1/2
+  -translate-x-1/2
+  -translate-y-1/2
+  z-10
+  text-3xl
 
-  <h1 class="bg-black text-white text-center">{{this.subtitleText}}</h1>
+  ">{{this.subtitleText}}</h1>
 
-  <div class="absolute bottom-0 w-full">
+  <div class="absolute bottom-0 w-full z-10">
     <div class="max-w-lg mx-auto">
       <audio [src]="song.src" controls
+      autoplay
+      hidden="true"
       (timeupdate)="onAudioTimeupdate($event)"
       ></audio>
     </div>
