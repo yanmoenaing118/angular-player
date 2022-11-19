@@ -71,4 +71,7 @@ export function convertVttToJson(vttString:any) {
       }
       return copy;
   }
+
+
+  // vtt-json: npm package
   

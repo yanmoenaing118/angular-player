@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     eng_subtitle: '../assets/vtt/Parting-with-Love.vtt',
   };
 
-  subtitleArray!: string[];
+  subtitleArray!: any;
   subtitleText: string = '';
 
   ngOnInit(): void {
@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
   selectSong(song: Song) {
     this.song = song;
     this.createSubtitleArray();
-    
   }
 
   createSubtitleArray(): void {
@@ -43,6 +42,13 @@ export class AppComponent implements OnInit {
   }
 
   onAudioTimeupdate(event: any) {
-    console.log(event);
+    this.subtitleArray.forEach((el: any, idx: number) => {
+      if (
+        event.target.currentTime * 1000 >= el.start &&
+        event.target.currentTime * 1000 <= el.end
+      ) {
+        this.subtitleText = this.subtitleArray[idx].part;
+      }
+    });
   }
 }
