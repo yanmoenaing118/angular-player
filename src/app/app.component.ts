@@ -19,4 +19,8 @@ export class AppComponent {
     poster: '../assets/poster/Parting-with-Love.jpg',
     eng_subtitle: '../assets/vtt/Parting-with-Love.vtt',
   };
+
+  selectSong(song: Song) {
+    this.song = song;
+  }
 }

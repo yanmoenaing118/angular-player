@@ -1,4 +1,4 @@
-<app-play-list></app-play-list>
+<app-play-list (emitSelectedSong)="selectSong($event)"></app-play-list>
 
 <div class="fixed w-full h-full bg-cover bg-no-repeat" [style.backgroundImage]="'url('+song.poster+')'">
 

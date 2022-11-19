@@ -4,7 +4,7 @@
 
     <div class="mt-8">
         <div *ngFor="let song of songs">
-            <div class="py-3 border-b border-b-gray-600 px-3 cursor-pointer hover:bg-gray-600">
+            <div (click)="selectSong(song)" class="py-3 border-b border-b-gray-600 px-3 cursor-pointer hover:bg-gray-600">
                 <h1 class="capitalize font-bold text-gray-100">{{song.title}}</h1>
                 <p class="text-sm text-gray-200">{{song.singer}}</p>
             </div>

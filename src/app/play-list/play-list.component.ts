@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Song } from 'src/utils/types';
 
 const songs: Array<Song> = [
@@ -40,7 +40,7 @@ const songs: Array<Song> = [
     drama: 'Crash Landing On You',
     singer: 'Davichi',
     src: 'https://myplaylist.vercel.app/static/media/here_i_am_again.1e8e27f3.mp3',
-    poster: 'https://myplaylist.vercel.app/static/media/cloy.bacc342e.jpg',
+    poster: 'https://zadlan.com/wp-content/uploads/2022/02/768aa2e6-643e-11ea-8e9f-2d196083a37c_image_hires_171957.jpg',
     eng_subtitle:
       'https://myplaylist.vercel.app/static/media/here_i_am_again.1c5d3248.vtt',
   },
@@ -66,17 +66,6 @@ const songs: Array<Song> = [
       'https://myplaylist.vercel.app/static/media/done_for_me.2d83e900.vtt',
   },
   {
-    id: 7,
-    title: 'Start Over',
-    drama: 'Itaewon Class',
-    singer: 'Gaho',
-    src: 'https://myplaylist.vercel.app/static/media/start_over_itaewon.c5b6235b.mp3',
-    poster:
-      'https://myplaylist.vercel.app/static/media/itaewon_class.a2b75096.jpg',
-    eng_subtitle:
-      'https://myplaylist.vercel.app/static/media/start_over_itaewon.6ce42961.vtt',
-  },
-  {
     id: 3,
     title: 'Coloured Glass',
     drama: 'Love and Redemption',
@@ -95,6 +84,8 @@ const songs: Array<Song> = [
   styleUrls: ['./play-list.component.css'],
 })
 export class PlayListComponent implements OnInit {
+
+  @Output() emitSelectedSong = new EventEmitter<Song>();
   songs: Array<Song>;
 
   constructor() {
@@ -102,4 +93,8 @@ export class PlayListComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  selectSong(song: Song) {
+    this.emitSelectedSong.emit(song);
+  }
 }
