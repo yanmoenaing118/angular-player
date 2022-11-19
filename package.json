@@ -20,6 +20,8 @@
     "@angular/router": "^14.2.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "vtt-2-json": "^1.1.4",
+    "vtt-json": "^1.0.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

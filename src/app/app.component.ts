@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { fetchSubtitle, createSubtitle } from 'src/utils/subtitle';
 import { Song } from 'src/utils/types';
-
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'angular-player';
 
   song: Song = {
@@ -20,7 +20,29 @@ export class AppComponent {
     eng_subtitle: '../assets/vtt/Parting-with-Love.vtt',
   };
 
+  subtitleArray!: string[];
+  subtitleText: string = '';
+
+  ngOnInit(): void {
+    this.createSubtitleArray();
+  }
+
   selectSong(song: Song) {
     this.song = song;
+    this.createSubtitleArray();
+    
+  }
+
+  createSubtitleArray(): void {
+    fetchSubtitle(this.song.eng_subtitle)
+      .then((subtitleText) => createSubtitle(subtitleText))
+      .then((sub) => {
+        this.subtitleArray = sub;
+        console.log(this.subtitleArray);
+      });
+  }
+
+  onAudioTimeupdate(event: any) {
+    console.log(event);
   }
 }

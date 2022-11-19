@@ -5,7 +5,9 @@
 
   <div class="absolute bottom-0 w-full">
     <div class="max-w-lg mx-auto">
-      <audio [src]="song.src" controls></audio>
+      <audio [src]="song.src" controls
+      (timeupdate)="onAudioTimeupdate($event)"
+      ></audio>
     </div>
   </div>
 
