@@ -14,7 +14,7 @@
 
   ">{{this.subtitleText}}</h1>
 
-  <div class="absolute bottom-0 w-full z-10">
+  <!-- <div class="absolute bottom-0 w-full z-10">
     <div class="max-w-lg mx-auto">
       <audio [src]="song.src" controls
       autoplay
@@ -22,6 +22,8 @@
       (timeupdate)="onAudioTimeupdate($event)"
       ></audio>
     </div>
-  </div>
+  </div> -->
+  
+  <app-player [song]="song" (onAudioUpdate)="onAudioTimeupdate($event)"></app-player>
 
 </div>

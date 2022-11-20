@@ -7,11 +7,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PlayListComponent } from './play-list/play-list.component';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayListComponent
+    PlayListComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,
