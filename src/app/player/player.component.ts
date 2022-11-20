@@ -18,18 +18,19 @@ import {
   faForward,
 } from '@fortawesome/free-solid-svg-icons';
 import { SongsListService } from '../services/songs-list.service';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, RouterEvent, Event, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { fetchSubtitle, createSubtitle } from 'src/utils/subtitle';
+
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css'],
 })
-export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
+export class PlayerComponent implements OnInit {
   song: any = null;
   @Output() onAudioUpdate = new EventEmitter();
-  @Output() goNext = new EventEmitter<number>();
-  @Output() goPrev = new EventEmitter<number>();
   @ViewChild('audio') audio!: ElementRef<HTMLAudioElement>;
 
   /** ICONS */
@@ -43,24 +44,17 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   endtime!: string;
   paused: boolean = true;
   played: boolean = false;
+  subtitleArray: any = [];
+  subtitleText: string = '';
 
   constructor(
     private songsService: SongsListService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
     this.getSong();
-  }
-
-  ngAfterViewInit(): void {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    for (const propName in changes) {
-      const chng = changes[propName];
-      const cur = JSON.stringify(chng.currentValue);
-      const prev = JSON.stringify(chng.previousValue);
-    }
   }
 
   getSong() {
@@ -68,12 +62,30 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     const songId = Number(routeParams.get('id'));
     this.songsService.getSongById(songId).subscribe((res) => {
       this.song = res;
+      this.createSubtitleArray();
     });
   }
 
   onAudioTimeupdate(event: any) {
-    this.onAudioUpdate.emit(event);
+    // this.onAudioUpdate.emit(event);
     this.starttime = this.getTimeStamp(this.audio.nativeElement.currentTime);
+    this.subtitleArray.forEach((el: any, idx: number) => {
+      if (
+        event.target.currentTime * 1000 >= el.start &&
+        event.target.currentTime * 1000 <= el.end
+      ) {
+        this.subtitleText = this.subtitleArray[idx].part;
+      }
+    });
+  }
+
+  createSubtitleArray(): void {
+    
+    fetchSubtitle(this.song.eng_subtitle)
+      .then((subtitleText) => createSubtitle(subtitleText))
+      .then((sub) => {
+        this.subtitleArray = sub;
+      });
   }
 
   onAudioMetadataLoaded(event: any) {
@@ -81,6 +93,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     this.starttime = '00:00';
     this.endtime = this.getTimeStamp(audio.duration);
   }
+
+  
 
   onPlay(event: any) {
     this.play();

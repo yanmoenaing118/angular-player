@@ -88,7 +88,6 @@ const songs: Array<Song> = [
 })
 export class PlayListComponent implements OnInit {
 
-  @Output() emitSelectedSong = new EventEmitter<Song>();
   @Output() closePlayList = new EventEmitter<void>();
   songs: any;
   faXmark = faXmark;
@@ -102,10 +101,6 @@ export class PlayListComponent implements OnInit {
     .subscribe(res => {
       this.songs = res;
     })
-  }
-
-  selectSong(song: Song) {
-    this.emitSelectedSong.emit(song);
   }
 
   closePlaylist(){
