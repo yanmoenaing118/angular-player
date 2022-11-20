@@ -1,16 +1,11 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
+  EventEmitter,
 } from '@angular/core';
-import { Song } from 'src/utils/types';
 import {
   faPlay,
   faPause,
@@ -18,10 +13,8 @@ import {
   faForward,
 } from '@fortawesome/free-solid-svg-icons';
 import { SongsListService } from '../services/songs-list.service';
-import { ActivatedRoute, RouterEvent, Event, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fetchSubtitle, createSubtitle } from 'src/utils/subtitle';
-
 
 @Component({
   selector: 'app-player',
@@ -58,16 +51,16 @@ export class PlayerComponent implements OnInit {
   }
 
   getSong() {
-    const routeParams = this.route.snapshot.paramMap;
-    const songId = Number(routeParams.get('id'));
-    this.songsService.getSongById(songId).subscribe((res) => {
-      this.song = res;
-      this.createSubtitleArray();
+    this.route.paramMap.subscribe((ob) => {
+      const songId = Number(ob.get('id'));
+      this.songsService.getSongById(songId).subscribe((res) => {
+        this.song = res;
+        this.createSubtitleArray();
+      });
     });
   }
 
   onAudioTimeupdate(event: any) {
-    // this.onAudioUpdate.emit(event);
     this.starttime = this.getTimeStamp(this.audio.nativeElement.currentTime);
     this.subtitleArray.forEach((el: any, idx: number) => {
       if (
@@ -80,7 +73,6 @@ export class PlayerComponent implements OnInit {
   }
 
   createSubtitleArray(): void {
-    
     fetchSubtitle(this.song.eng_subtitle)
       .then((subtitleText) => createSubtitle(subtitleText))
       .then((sub) => {
@@ -88,13 +80,21 @@ export class PlayerComponent implements OnInit {
       });
   }
 
+
+
   onAudioMetadataLoaded(event: any) {
     const audio = this.audio.nativeElement;
     this.starttime = '00:00';
     this.endtime = this.getTimeStamp(audio.duration);
   }
 
-  
+  goNextSong() {
+    this.router.navigate([`/play/${this.song.id + 1}`]);
+  }
+
+  goPrevSong() {
+    this.router.navigate([`/play/${this.song.id - 1}`]);
+  }
 
   onPlay(event: any) {
     this.play();

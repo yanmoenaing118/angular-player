@@ -1,4 +1,4 @@
-<div *ngIf="song" class="fixed w-full h-full bg-cover bg-no-repeat player-bg" [style.backgroundImage]="'url('+song.poster+')'
+<div *ngIf="song" class="fixed w-full h-full bg-cover bg-no-repeat bg-center player-bg" [style.backgroundImage]="'url('+song.poster+')'
 ">
   <!-- <button (click)="togglePlaylist()" class="z-10 absolute right-4 top-4 bg-black text-white p-3 shadow-md">PLAYLIST</button> -->
   <h1 class="font-mono text-white text-center
@@ -24,14 +24,14 @@
     <div class="flex justify-between items-center">
       <div class="text-white">{{starttime}}</div>
       <div class="flex justify-center gap-10 items-center mt-4">
-        <button>
+        <button (click)="goPrevSong()">
           <fa-icon [icon]="faBackward" class="text-white" size="lg"></fa-icon>
   
         </button>
         <button (click)="togglePlayPause()" class="w-3 h-3 flex justify-center items-center">
           <fa-icon [icon]="paused ? faPlay : faPause" class="text-white" size="2x"></fa-icon>
         </button>
-        <button>
+        <button (click)="goNextSong()">
           <fa-icon [icon]="faForward" class="text-white" size="lg"></fa-icon>
   
         </button>
