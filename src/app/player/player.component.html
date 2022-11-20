@@ -1,4 +1,4 @@
-<div class="absolute bottom-16 w-full z-10">
+<div *ngIf="song" class="absolute bottom-16 w-full z-10">
   <div class="max-w-lg mx-auto">
     <audio [src]="song.src" controls autoplay hidden="true" (timeupdate)="onAudioTimeupdate($event)"
       (loadedmetadata)="onAudioMetadataLoaded($event)"

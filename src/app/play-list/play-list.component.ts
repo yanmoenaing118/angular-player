@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Song } from 'src/utils/types';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { SongsListService } from '../services/songs-list.service';
 
 
 const songs: Array<Song> = [
@@ -89,14 +90,19 @@ export class PlayListComponent implements OnInit {
 
   @Output() emitSelectedSong = new EventEmitter<Song>();
   @Output() closePlayList = new EventEmitter<void>();
-  songs: Array<Song>;
+  songs: any;
   faXmark = faXmark;
 
-  constructor() {
+  constructor(private songsService: SongsListService) {
     this.songs = songs;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.songsService.getSongsList()
+    .subscribe(res => {
+      this.songs = res;
+    })
+  }
 
   selectSong(song: Song) {
     this.emitSelectedSong.emit(song);

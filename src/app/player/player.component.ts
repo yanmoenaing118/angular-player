@@ -4,8 +4,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Song } from 'src/utils/types';
@@ -15,14 +17,16 @@ import {
   faBackward,
   faForward,
 } from '@fortawesome/free-solid-svg-icons';
+import { SongsListService } from '../services/songs-list.service';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css'],
 })
-export class PlayerComponent implements OnInit, AfterViewInit {
-  @Input() song!: Song;
+export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
+  song: any = null;
   @Output() onAudioUpdate = new EventEmitter();
   @Output() goNext = new EventEmitter<number>();
   @Output() goPrev = new EventEmitter<number>();
@@ -40,11 +44,32 @@ export class PlayerComponent implements OnInit, AfterViewInit {
   paused: boolean = true;
   played: boolean = false;
 
-  constructor() {}
+  constructor(
+    private songsService: SongsListService,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getSong();
+  }
 
   ngAfterViewInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    for (const propName in changes) {
+      const chng = changes[propName];
+      const cur = JSON.stringify(chng.currentValue);
+      const prev = JSON.stringify(chng.previousValue);
+    }
+  }
+
+  getSong() {
+    const routeParams = this.route.snapshot.paramMap;
+    const songId = Number(routeParams.get('id'));
+    this.songsService.getSongById(songId).subscribe((res) => {
+      this.song = res;
+    });
+  }
 
   onAudioTimeupdate(event: any) {
     this.onAudioUpdate.emit(event);

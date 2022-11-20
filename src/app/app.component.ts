@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
       .then((subtitleText) => createSubtitle(subtitleText))
       .then((sub) => {
         this.subtitleArray = sub;
-        console.log(this.subtitleArray);
       });
   }
 
